@@ -1,0 +1,242 @@
+
+// temperature
+% Read a larger dataset (e.g., a range that includes the desired timestamp)
+data= thingSpeakRead(2350185, 'Field', 1, 'NumPoints', 1000, 'OutputFormat', 'table'); % Adjust 'NumPoints' as needed
+
+% Convert the 'TimeStamps' column to datetime format
+data.Timestamps = datetime(data.Timestamps, 'InputFormat', 'dd-MMM-yyyy HH:mm:ss');
+
+% Define the desired start and end times
+startTime = datetime('19-Nov-2023 15:59:58');
+endTime = datetime('19-Nov-2023 16:02:24');
+
+% Filter the data within the desired time range
+filteredData = data(data.Timestamps >= startTime & data.Timestamps <= endTime, :);
+
+% Display the retrieved data within the specified time range
+disp(filteredData);
+
+
+% Assuming filteredData is available with a column named 'Temperature' which contains {'31.80'}, {'31.30'}, etc.
+
+% Convert 'Temperature' column to numeric values
+filteredData.Temperature = str2double(filteredData.Temperature);
+
+% Create a time vector from timestamps (if not already available)
+timeVector = filteredData.Timestamps;
+
+% Fit a linear regression model
+mdl = fitlm(datenum(timeVector), filteredData.Temperature);
+
+% Forecasting for the next time point
+nextTime = timeVector(end) + minutes(1); % Assuming the next time point is 1 minute after the last recorded timestamp
+forecastedTemperature = predict(mdl, datenum(nextTime));
+
+disp(['Forecasted temperature at ' char(nextTime) ' is: ' num2str(forecastedTemperature)]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Humidity
+
+% Read a larger dataset (e.g., a range that includes the desired timestamp)
+data= thingSpeakRead(2350185, 'Field', 2, 'NumPoints', 1000, 'OutputFormat', 'table'); % Adjust 'NumPoints' as needed
+
+% Convert the 'TimeStamps' column to datetime format
+data.Timestamps = datetime(data.Timestamps, 'InputFormat', 'dd-MMM-yyyy HH:mm:ss');
+
+% Define the desired start and end times
+startTime = datetime('19-Nov-2023 15:59:58');
+endTime = datetime('19-Nov-2023 16:02:24');
+
+% Filter the data within the desired time range
+filteredData = data(data.Timestamps >= startTime & data.Timestamps <= endTime, :);
+
+% Display the retrieved data within the specified time range
+disp(filteredData);
+
+
+% Assuming filteredData is available with a column named 'Temperature' which contains {'31.80'}, {'31.30'}, etc.
+
+% Convert 'Humidity' column to numeric values
+filteredData.Humidity = str2double(filteredData.Humidity);
+
+% Create a time vector from timestamps (if not already available)
+timeVector = filteredData.Timestamps;
+
+% Fit a linear regression model
+mdl = fitlm(datenum(timeVector), filteredData.Humidity);
+
+% Forecasting for the next time point
+nextTime = timeVector(end) + minutes(1); % Assuming the next time point is 1 minute after the last recorded timestamp
+forecastedHumidity = predict(mdl, datenum(nextTime));
+
+disp(['Forecasted Humidity at ' char(nextTime) ' is: ' num2str(forecastedHumidity)]);
+
+
+
+
+
+
+
+
+
+//latitude
+
+
+
+
+
+
+
+% Read a larger dataset (e.g., a range that includes the desired timestamp)
+data= thingSpeakRead(2350185, 'Field', 3, 'NumPoints', 1000, 'OutputFormat', 'table'); % Adjust 'NumPoints' as needed
+
+% Convert the 'TimeStamps' column to datetime format
+data.Timestamps = datetime(data.Timestamps, 'InputFormat', 'dd-MMM-yyyy HH:mm:ss');
+
+% Define the desired start and end times
+startTime = datetime('19-Nov-2023 15:59:58');
+endTime = datetime('19-Nov-2023 16:02:24');
+
+% Filter the data within the desired time range
+filteredData = data(data.Timestamps >= startTime & data.Timestamps <= endTime, :);
+
+% Display the retrieved data within the specified time range
+disp(filteredData);
+
+
+
+% Create a time vector from timestamps (if not already available)
+timeVector = filteredData.Timestamps;
+
+% Fit a linear regression model
+mdl = fitlm(datenum(timeVector), filteredData.Latitude);
+
+% Forecasting for the next time point
+nextTime = timeVector(end) + minutes(1); % Assuming the next time point is 1 minute after the last recorded timestamp
+forecastedLatitude = predict(mdl, datenum(nextTime));
+
+disp(['Forecasted Latitude at ' char(nextTime) ' is: ' num2str(forecastedLatitude)]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//longitude
+
+
+
+% Read a larger dataset (e.g., a range that includes the desired timestamp)
+data= thingSpeakRead(2350185, 'Field', 4, 'NumPoints', 1000, 'OutputFormat', 'table'); % Adjust 'NumPoints' as needed
+
+% Convert the 'TimeStamps' column to datetime format
+data.Timestamps = datetime(data.Timestamps, 'InputFormat', 'dd-MMM-yyyy HH:mm:ss');
+
+% Define the desired start and end times
+startTime = datetime('19-Nov-2023 15:59:58');
+endTime = datetime('19-Nov-2023 16:02:24');
+
+% Filter the data within the desired time range
+filteredData = data(data.Timestamps >= startTime & data.Timestamps <= endTime, :);
+
+% Display the retrieved data within the specified time range
+disp(filteredData);
+
+
+
+% Create a time vector from timestamps (if not already available)
+timeVector = filteredData.Timestamps;
+
+% Fit a linear regression model
+mdl = fitlm(datenum(timeVector), filteredData.Longitude);
+
+% Forecasting for the next time point
+nextTime = timeVector(end) + minutes(1); % Assuming the next time point is 1 minute after the last recorded timestamp
+forecastedLongitude = predict(mdl, datenum(nextTime));
+
+disp(['Forecasted Longitude at ' char(nextTime) ' is: ' num2str(forecastedLongitude)]);
+
+
+
+
+
+data = readtable('C:\Users\Karth\OneDrive\Desktop\5th sem\iot project\final2\temperature.xlsx');
+data_points = data.Temperature;
+
+% Initialize the cluster indices
+idx = zeros(size(data_points));
+
+% Assign points based on the range criteria
+idx(data_points >= -5 & data_points <= 5) = 1;  % Assign cluster 1 for values within -5 to 5
+idx(data_points < -5 | data_points > 5) = 2;   % Assign cluster 2 for values outside -5 to 5
+
+% Display the data points in each cluster
+fprintf('Data points within range -5 to 5 (normal 1):\n');
+disp(data_points(idx == 1));
+
+fprintf('Data points outside range -5 to 5 (abnormal 2):\n');
+disp(data_points(idx == 2));
+
+
+
+
+
+
+% Generate sample data points
+
+data = readtable('C:\Users\Karth\OneDrive\Desktop\5th sem\iot project\final2\temperature.xlsx');
+data_points = data.Temperature;
+data_points = data_points'
+
+
+% Number of clusters
+k = 2;
+
+% Reshape data into a column vector
+data_points = data_points(:);
+
+% Find the indices of the clusters using k-means
+[idx, centroids] = kmeans(data_points, k);
+
+% Find the cluster indices based on centroids within the range -5 to 5
+normal_cluster = find(centroids >= -5 & centroids <= 5);
+abnormal_cluster = setdiff(1:k, normal_cluster);
+
+% Display data points within and outside the range -5 to 5
+fprintf('Data points within range -5 to 5 (Cluster %d):\n', normal_cluster);
+disp(data_points(idx == normal_cluster));
+fprintf('Data points outside range -5 to 5 (Cluster %d):\n', abnormal_cluster);
+disp(data_points(idx == abnormal_cluster));
